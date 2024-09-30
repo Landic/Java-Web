@@ -57,3 +57,13 @@
 <h2>Взаємодія з файлами</h2>
 &lt;jsp:include page="WEB-INF/fragment.jsp"/&gt;
 <jsp:include page="../fragment.jsp"/>
+
+<h2>HW 01.10</h2>
+<table style="border: 1px solid black; border-collapse: collapse; text-align: center;" width="200">
+    <% for(int i = 0; i < prices.length; i++){%>
+        <tr>
+            <td style="border: 1px solid black; border-collapse: collapse;"><%=i+1%></td>
+            <td style="border: 1px solid black; border-collapse: collapse;"><%= prices[i] %></td>
+        </tr>
+    <%}%>
+</table>
