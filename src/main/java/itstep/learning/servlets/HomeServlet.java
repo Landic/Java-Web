@@ -22,7 +22,7 @@ public class HomeServlet extends HttpServlet {
             req.setAttribute("body", "home.jsp"); // ViewData
         }
         else{
-            req.setAttribute("body", "not_found.jsp"); // ViewData
+            req.setAttribute("body", "insecure.jsp"); // ViewData
         }
         req.getRequestDispatcher("WEB-INF/views/_layout.jsp").forward(req, resp);
 
