@@ -13,7 +13,17 @@ public class HomeServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
     {
-        req.setAttribute("body", "home.jsp"); // ViewData
+        boolean isSigned = false;
+        Object signature = req.getAttribute("signature");
+        if(signature instanceof Boolean){
+            isSigned = (Boolean) signature;
+        }
+        if(isSigned == true){
+            req.setAttribute("body", "home.jsp"); // ViewData
+        }
+        else{
+            req.setAttribute("body", "not_found.jsp"); // ViewData
+        }
         req.getRequestDispatcher("WEB-INF/views/_layout.jsp").forward(req, resp);
 
 //        resp.getWriter().println("<h1>Home</h1>");
