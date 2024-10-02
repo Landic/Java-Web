@@ -1,15 +1,35 @@
 package itstep.learning.servlets;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import itstep.learning.services.kdf.*;
+import itstep.learning.services.db.*;
+import itstep.learning.services.hash.HashService;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.SQLException;
 
 
-@WebServlet("")
+@Singleton
 public class HomeServlet extends HttpServlet {
+    private final KdfService kdfService;
+    private final DbService dbService;
+    // Впровадження залежностей (інжекція)
+    private final HashService hashService;
+//    private final KdfService kdfService;
+
+    @Inject
+    public HomeServlet(HashService hashService, KdfService kdfService, DbService dbService) {
+        this.hashService = hashService;
+        this.kdfService = kdfService;
+        this.dbService = dbService;
+    }
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
     {
@@ -18,11 +38,21 @@ public class HomeServlet extends HttpServlet {
         if(signature instanceof Boolean){
             isSigned = (Boolean) signature;
         }
-        if(isSigned == true){
-            req.setAttribute("body", "home.jsp"); // ViewData
+        if(isSigned){
+            String dbMessage;
+            try {
+                dbService.getConnection();
+                dbMessage = "Connection OK";
+            }
+            catch (SQLException ex) {
+                dbMessage = ex.getMessage();
+            }
+            req.setAttribute("hash", hashService.hash("123") + " | " + kdfService.dk("password", "salt.4") +" | "+
+                    dbMessage);
+            req.setAttribute("body", "home.jsp");   // ~ ViewData["body"] = "home.jsp";
         }
         else{
-            req.setAttribute("body", "insecure.jsp"); // ViewData
+            req.setAttribute("body", "not_found.jsp");
         }
         req.getRequestDispatcher("WEB-INF/views/_layout.jsp").forward(req, resp);
 

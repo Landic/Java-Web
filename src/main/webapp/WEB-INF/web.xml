@@ -6,38 +6,52 @@
   <display-name>KN-P-213 web project</display-name>
 
 <!-- Реєстрація фільтрів -->
+<!--  <filter>-->
+<!--    <filter-name>charsetFilter</filter-name>-->
+<!--    <filter-class>itstep.learning.filters.CharsetFilter</filter-class>-->
+<!--  </filter>-->
+<!--  <filter-mapping>-->
+<!--    <filter-name>charsetFilter</filter-name>-->
+<!--    <url-pattern>/*</url-pattern>-->
+<!--  </filter-mapping>-->
+
+<!--  <filter>-->
+<!--    <filter-name>securityFilter</filter-name>-->
+<!--    <filter-class>itstep.learning.filters.SecurityFilter</filter-class>-->
+<!--  </filter>-->
+<!--  <filter-mapping>-->
+<!--    <filter-name>securityFilter</filter-name>-->
+<!--    <url-pattern>/*</url-pattern>-->
+<!--  </filter-mapping>-->
+
   <filter>
-    <filter-name>charsetFilter</filter-name>
-    <filter-class>itstep.learning.filters.CharsetFilter</filter-class>
+    <filter-name>iocFilter</filter-name>
+    <filter-class>com.google.inject.servlet.GuiceFilter</filter-class>
   </filter>
+
   <filter-mapping>
-    <filter-name>charsetFilter</filter-name>
+    <filter-name>iocFilter</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
 
-  <filter>
-    <filter-name>securityFilter</filter-name>
-    <filter-class>itstep.learning.filters.SecurityFilter</filter-class>
-  </filter>
-  <filter-mapping>
-    <filter-name>securityFilter</filter-name>
-    <url-pattern>/*</url-pattern>
-  </filter-mapping>
-
-
+  <listener>
+    <listener-class>itstep.learning.ioc.ConfigContextListener</listener-class>
+  </listener>
+  
+  
   <error-page>
     <error-code>404</error-code>
     <location>/WEB-INF/views/_layout.jsp</location>
   </error-page>
   <!-- Реєстрація сервлетів -->
-  <servlet>
-    <servlet-name>webXmlServlet</servlet-name>
-    <servlet-class>itstep.learning.servlets.WebXmlServlet</servlet-class>
-    <!-- webXmlServlet = new itstep.learning.servlets.WebXmlServlet() -->
-  </servlet>
-  <!-- Та їх маршрутизація (mapping) -->
-  <servlet-mapping>
-    <servlet-name>webXmlServlet</servlet-name>
-    <url-pattern>/web-xml</url-pattern>
-  </servlet-mapping>
+<!--  <servlet>-->
+<!--    <servlet-name>webXmlServlet</servlet-name>-->
+<!--    <servlet-class>itstep.learning.servlets.WebXmlServlet</servlet-class>-->
+<!--    &lt;!&ndash; webXmlServlet = new itstep.learning.servlets.WebXmlServlet() &ndash;&gt;-->
+<!--  </servlet>-->
+<!--  &lt;!&ndash; Та їх маршрутизація (mapping) &ndash;&gt;-->
+<!--  <servlet-mapping>-->
+<!--    <servlet-name>webXmlServlet</servlet-name>-->
+<!--    <url-pattern>/web-xml</url-pattern>-->
+<!--  </servlet-mapping>-->
 </web-app>
