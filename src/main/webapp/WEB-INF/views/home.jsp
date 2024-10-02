@@ -88,4 +88,9 @@ double[] prices = { 10.0, 20.0, 30.0, 40.0 };
 <h2>HW 03.10</h2>
 
 <%GeneratorService generator = new GeneratorService();%>
-<p><%= generator.generateFileName(20) %></p>
+<ul>
+    <li>Стандартна довжина: <%= generator.generateFileName(null) %></li>
+    <li>Довжина 5 символів: <%= generator.generateFileName(5) %></li>
+    <li>Довжина 10 символів: <%= generator.generateFileName(10) %></li>
+    <li>Довжина 20 символів: <%= generator.generateFileName(20) %></li>
+</ul>
