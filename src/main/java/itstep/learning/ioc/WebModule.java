@@ -19,6 +19,7 @@ public class WebModule extends ServletModule {
         // те ж саме з сервлетами
         serve( "/"        ).with( HomeServlet.class);
         serve( "/auth"    ).with( AuthServlet.class);
+        serve("/storage/*").with( StorageServlet.class);
         serve( "/web-xml" ).with( WebXmlServlet.class );
 
 

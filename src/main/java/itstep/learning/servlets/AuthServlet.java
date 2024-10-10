@@ -6,10 +6,14 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import itstep.learning.dal.dao.AuthDao;
 import itstep.learning.dal.dto.User;
+import itstep.learning.models.SignupFormModel;
 import itstep.learning.rest.RestMetaData;
 import itstep.learning.rest.RestResponce;
 import itstep.learning.rest.RestServlet;
 import itstep.learning.rest.RestStatus;
+import itstep.learning.services.form.FormParseService;
+import itstep.learning.services.form.FormResult;
+import itstep.learning.services.storage.StorageService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -24,9 +28,14 @@ import java.util.Date;
 @Singleton
 public class AuthServlet extends RestServlet {
     private final AuthDao authDao;
+    private final FormParseService formParseService;
+    private final StorageService storageService;
+
 
     @Inject
-    public AuthServlet(AuthDao authDao) {
+    public AuthServlet(AuthDao authDao, FormParseService formParseService, StorageService storageService) {
+        this.storageService = storageService;
+        this.formParseService = formParseService;
         this.authDao = authDao;
     }
 
@@ -105,51 +114,26 @@ public class AuthServlet extends RestServlet {
         super.service(req, resp);
     }
 
-//    class RestResponce {
-//        private int code;
-//        private String status;
-//        private Object data;
-//
-//        public RestResponce() {
-//
-//        }
-//
-//        public RestResponce(int code, String status, Object data) {
-//            this.code = code;
-//            this.status = status;
-//            this.data = data;
-//        }
-//        public int getCode() {
-//            return code;
-//        }
-//        public void setCode(int code) {
-//            this.code = code;
-//        }
-//
-//        public String getStatus() {
-//            return status;
-//        }
-//        public void setStatus(String status) {
-//            this.status = status;
-//        }
-//        public Object getData() {
-//            return data;
-//        }
-//        public void setData(Object data) {
-//            this.data = data;
-//        }
-//    }
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        // Sign up
+        // req.getParameter("name"); параметри запиту: URL - або form-дані
+        // Але! за умови, що форма передається як x-www-form-urlencoded
+        // і не працює для multipart/form-data
+        FormResult formParse = formParseService.parse(req);
+        String savedName;
+        try{
+            savedName = storageService.saveFile(formParse.getFiles().get("signup-avatar"));
+        }
+        catch (IOException ex){
+            savedName = ex.getMessage();
+        }
+        super.sendResponce("files: " + formParse.getFiles().size() + ", fields: " + formParse.getFields().size() + ", name: " + savedName);
+    }
+
+    private SignupFormModel getSignupFormModel(HttpServletRequest req) throws Exception{
+        return null;
+    }
 }
 
-/*
 
-Д.3. Створити сторінку для автоматизованого тестування API
-У кодах сторінки надсилаються різні запити на /auth
-як правильні, так і такі, що містять помилки
-і виводяться відповіді на них
-
-Without 'Authorization' header: {code: 401, status: 'error', data: 'Authorization header not found'
-With non-Basic scheme: { ... }
-
-** Відповіді, що відповідають очікуванням, позначати зеленим кольором, інші - червоним
-*/
