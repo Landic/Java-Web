@@ -94,3 +94,4 @@ double[] prices = { 10.0, 20.0, 30.0, 40.0 };
     <li>Довжина 10 символів: <%= generator.generateFileName(10) %></li>
     <li>Довжина 20 символів: <%= generator.generateFileName(20) %></li>
 </ul>
+
