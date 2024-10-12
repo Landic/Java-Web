@@ -31,6 +31,9 @@
                 <li class="nav-item">
                     <a class="nav-link <%="shop.jsp".equals(pageBody) ? "active" : "" %>" href="<%=contextPath%>/shop.jsp">Крамниця</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link <%="authTest.jsp".equals(pageBody) ? "active" : "" %>" href="<%=contextPath%>/authtest">AuthTest</a>
+                </li>
             </ul>
             <form class="d-flex" role="search">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">

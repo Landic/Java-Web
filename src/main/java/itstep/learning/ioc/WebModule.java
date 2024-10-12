@@ -21,6 +21,7 @@ public class WebModule extends ServletModule {
         serve( "/auth"    ).with( AuthServlet.class);
         serve("/storage/*").with( StorageServlet.class);
         serve( "/web-xml" ).with( WebXmlServlet.class );
+        serve( "/authtest" ).with( AuthTestServlet.class );
 
 
 
