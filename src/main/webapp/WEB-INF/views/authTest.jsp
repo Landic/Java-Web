@@ -28,9 +28,12 @@
     });
   }
   function isExpectedResult(testCase, data) {
-    if (testCase.name === "Without 'Authorization' header")  return data.code === 401 && data.status === 'error' && data.data === 'Authorization header not found';
-    else if (testCase.name === "With non-Basic scheme") return data.code === 400 && data.status === 'error' && data.data.includes('Invalid Authorization scheme');
-    else if (testCase.name === "Correct with login '234' and password '123'") return data.code === 200 && data.status === 'success' && data.data === '234:123';
+    if (testCase.name === "Without 'Authorization' header")
+      return data.code === 401 && data.status === 'error' && data.data === 'Authorization header not found';
+    else if (testCase.name === "With non-Basic scheme")
+      return data.code === 400 && data.status === 'error' && data.data.includes('Invalid Authorization scheme');
+    else if (testCase.name === "Correct with login '234' and password '123'")
+      return data.code === 200 && data.status === 'success' && data.data === '234:123';
     return false;
   }
   runTests();
