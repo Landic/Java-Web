@@ -22,21 +22,26 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Base64;
 import java.util.Date;
+import java.util.logging.Logger;
 
 @Singleton
 public class AuthServlet extends RestServlet {
     private final AuthDao authDao;
     private final FormParseService formParseService;
     private final StorageService storageService;
+    private final SimpleDateFormat sqlDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    private final Logger logger;
 
 
     @Inject
-    public AuthServlet(AuthDao authDao, FormParseService formParseService, StorageService storageService) {
+    public AuthServlet(AuthDao authDao, FormParseService formParseService, StorageService storageService, Logger logger) {
         this.storageService = storageService;
         this.formParseService = formParseService;
         this.authDao = authDao;
+        this.logger = logger;
     }
 
     @Override
@@ -102,7 +107,7 @@ public class AuthServlet extends RestServlet {
 
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.restResponce = new itstep.learning.rest.RestResponce().setMeta(
+        super.restResponce = new RestResponce().setMeta(
                 new RestMetaData()
                         .setUrl("/auth")
                         .setMethod((req.getMethod()))
@@ -116,23 +121,88 @@ public class AuthServlet extends RestServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        SignupFormModel model = new SignupFormModel();
+        try{
+            model = getSignupFormModel(req);
+        } catch (Exception e) {
+            super.sendResponce(400, e.getMessage());
+        }
+        User user = authDao.signUp( model );
+        if( user == null )
+        {
+            super.sendResponce( 400, "Signup error" );
+        }
+        else {
+            super.sendResponce( 201, user );
+        }
+    }
+
+    private SignupFormModel getSignupFormModel(HttpServletRequest req) throws Exception{
         // Sign up
         // req.getParameter("name"); параметри запиту: URL - або form-дані
         // Але! за умови, що форма передається як x-www-form-urlencoded
         // і не працює для multipart/form-data
         FormResult formParse = formParseService.parse(req);
-        String savedName;
+        SignupFormModel model = new SignupFormModel();
+        String data = formParse.getFields().get("signup-name");
+        if(data == null || data.isEmpty()){
+            throw new Exception("Missing or empty required field 'signup-name'");
+        }
+        model.setName(data);
+        data = formParse.getFields().get("signup-email");
+        if(data == null || data.isEmpty()){
+            throw new Exception("Missing or empty required field 'signup-email'");
+        }
+        model.setEmail(data);
+
+        data = formParse.getFields().get("signup-phone");
+        if(data == null || data.isEmpty()){
+            throw new Exception("Missing or empty required field 'signup-phone'");
+        }
+        model.setPhone(data);
+
+        data = formParse.getFields().get("signup-login");
+        if(data == null || data.isEmpty()){
+            throw new Exception("Missing or empty required field 'signup-login'");
+        }
+        model.setLogin(data);
+
+        data = formParse.getFields().get("signup-password");
+        if(data == null || data.isEmpty()){
+            throw new Exception("Missing or empty required field 'signup-password'");
+        }
+        model.setPassword(data);
+
+        data = formParse.getFields().get("signup-repeat");
+        if(data == null || data.isEmpty()){
+            throw new Exception("Missing or empty required field 'signup-repeat'");
+        }
+        if(!model.getPassword().equals(data)){
+            throw new Exception("Password and repeat do not match");
+        }
+        model.setRepeat(data);
+
+        data = formParse.getFields().get("signup-birthdate");
+        if(data == null || data.isEmpty()){
+            throw new Exception("Missing or empty required field 'signup-birthdate'");
+        }
         try{
-            savedName = storageService.saveFile(formParse.getFiles().get("signup-avatar"));
+            model.setBirthday(sqlDateFormat.parse(data));
+        }
+        catch (ParseException ex){
+            throw new Exception("Invalid birthdate format");
+        }
+
+
+        try{
+            data = storageService.saveFile(formParse.getFiles().get("signup-avatar"));
         }
         catch (IOException ex){
-            savedName = ex.getMessage();
+            logger.warning(ex.getMessage());
+            throw new Exception("Error processing 'signup-avatar'");
         }
-        super.sendResponce("files: " + formParse.getFiles().size() + ", fields: " + formParse.getFields().size() + ", name: " + savedName);
-    }
-
-    private SignupFormModel getSignupFormModel(HttpServletRequest req) throws Exception{
-        return null;
+        model.setAvatar(data);
+        return model;
     }
 }
 
