@@ -8,7 +8,7 @@ import itstep.learning.dal.dao.AuthDao;
 import itstep.learning.dal.dto.User;
 import itstep.learning.models.SignupFormModel;
 import itstep.learning.rest.RestMetaData;
-import itstep.learning.rest.RestResponce;
+import itstep.learning.rest.RestResponse;
 import itstep.learning.rest.RestServlet;
 import itstep.learning.rest.RestStatus;
 import itstep.learning.services.form.FormParseService;
@@ -57,7 +57,7 @@ public class AuthServlet extends RestServlet {
         // Декодуємо їх за Base64
         // Розділяємо за першим символом ':'
         // запитаємо автентифікацію в DAO
-        RestResponce restResponce = new RestResponce();
+        RestResponse restResponce = new RestResponse();
         try
         {
             String authHeader = req.getHeader("Authorization");
@@ -95,21 +95,21 @@ public class AuthServlet extends RestServlet {
                 throw new ParseException("Credentials rejected", 401);
             }
 
-            super.sendResponce( user );
+            super.sendResponse( user );
 
 
         }
         catch (ParseException ex){
-            super.sendResponce( ex.getErrorOffset(), ex. getMessage() );
+            super.sendResponse( ex.getErrorOffset(), ex. getMessage() );
         }
 
     }
 
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.restResponce = new RestResponce().setMeta(
+        super.restResponse = new RestResponse().setMeta(
                 new RestMetaData()
-                        .setUrl("/auth")
+                        .setUri("/auth")
                         .setMethod((req.getMethod()))
                         . setName ( "KN-P-213 Authentication API" )
                         . setServerTime( new Date() )
@@ -125,15 +125,15 @@ public class AuthServlet extends RestServlet {
         try{
             model = getSignupFormModel(req);
         } catch (Exception e) {
-            super.sendResponce(400, e.getMessage());
+            super.sendResponse(400, e.getMessage());
         }
         User user = authDao.signUp( model );
         if( user == null )
         {
-            super.sendResponce( 400, "Signup error" );
+            super.sendResponse( 400, "Signup error" );
         }
         else {
-            super.sendResponce( 201, user );
+            super.sendResponse( 201, user );
         }
     }
 

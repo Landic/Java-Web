@@ -10,63 +10,56 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class RestServlet extends HttpServlet {
-    protected   RestResponce restResponce;
+    protected RestResponse restResponse;
     private HttpServletResponse response;
     private final Gson gson = new GsonBuilder().serializeNulls().create();
 
-
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        response=resp;
+        response = resp;
         super.service(req, resp);
     }
 
-    protected void sendResponce(int code, Object data, int maxAge) throws IOException
-    {
-        if(code > 0)
-        {
-            restResponce.setStatus(new RestStatus(code));
+    protected void sendResponse( int code, Object data, int maxAge ) throws IOException {
+        if( code > 0 ) {
+            restResponse.setStatus( new RestStatus( code ) );
         }
-        if(data != null)
-            restResponce.setData(data);
+        if( data != null ) {
+            restResponse.setData( data );
+        }
+        // Self-descriptive messages: Each message includes enough information to describe how to process the message.
+        // For example, which parser to invoke can be specified by a media type.
+        response.setContentType( "application/json" );
 
-        response.setContentType("application/json");
-        
-        response.setHeader("Cache-Control", maxAge > 0 ? "max-age=" + maxAge : "no-cache");
+        // Cache – Responses indicate their own cacheability
+        response.setHeader( "Cache-Control", maxAge > 0 ? "max-age=" + maxAge : "no-cache" );
 
-        response.getWriter().print(gson.toJson(restResponce));
+        response.getWriter().print( gson.toJson( restResponse ) );
     }
 
-    protected void sendResponce(int code, Object data) throws IOException
-    {
-        this.sendResponce(code, data, 0);
+    protected void sendResponse( int code, Object data ) throws IOException {
+        this.sendResponse( code, data, 0 );
     }
 
-    protected void sendResponce(Object data) throws IOException
-    {
-        if( restResponce.getStatus() == null ) {
-            this.sendResponce(200, data);
+    protected void sendResponse( Object data ) throws IOException {
+        if( restResponse.getStatus() == null ) {
+            this.sendResponse( 200, data );
         }
-
         else {
-            this.sendResponce(-1, data);
+            this.sendResponse( -1, data );
         }
     }
 
-    protected void sendResponce(int code) throws IOException
-    {
-        this.sendResponce(code, null);
+    protected void sendResponse( int code ) throws IOException {
+        this.sendResponse( code, null );
     }
 
-    protected void sendResponce() throws IOException
-    {
-        if(restResponce.getStatus() == null)
-        {
-            this.sendResponce(200);
+    protected void sendResponse() throws IOException {
+        if( restResponse.getStatus() == null ) {
+            this.sendResponse( 200 );
         }
-        else
-        {
-            this.sendResponce(-1);
+        else {
+            this.sendResponse( -1 );
         }
     }
 }

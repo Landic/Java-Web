@@ -4,29 +4,19 @@ import java.util.Date;
 import java.util.Map;
 
 public class RestMetaData {
-    private String url;
+    private String uri;
     private String method;
-    private String name;
+    private String name;              // Self-descriptive messages
     private Date serverTime;
-    private String[] allowedMethods; // Resource manipulation through representations
-    private Map<String,Object> usedParameters;
+    private String[] allowedMethods;  // Resource manipulation through representations
+    private Map<String, Object> usedParameters;
 
-    public String getName() {
-        return name;
+    public String getUri() {
+        return uri;
     }
 
-    public RestMetaData setName(String name) {
-        this.name = name;
-        return this;
-
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public RestMetaData setUrl(String url) {
-        this.url = url;
+    public RestMetaData setUri(String uri) {
+        this.uri = uri;
         return this;
     }
 
@@ -37,7 +27,15 @@ public class RestMetaData {
     public RestMetaData setMethod(String method) {
         this.method = method;
         return this;
+    }
 
+    public String getName() {
+        return name;
+    }
+
+    public RestMetaData setName(String name) {
+        this.name = name;
+        return this;
     }
 
     public Date getServerTime() {
@@ -47,7 +45,6 @@ public class RestMetaData {
     public RestMetaData setServerTime(Date serverTime) {
         this.serverTime = serverTime;
         return this;
-
     }
 
     public String[] getAllowedMethods() {
@@ -57,7 +54,6 @@ public class RestMetaData {
     public RestMetaData setAllowedMethods(String[] allowedMethods) {
         this.allowedMethods = allowedMethods;
         return this;
-
     }
 
     public Map<String, Object> getUsedParameters() {
@@ -67,20 +63,19 @@ public class RestMetaData {
     public RestMetaData setUsedParameters(Map<String, Object> usedParameters) {
         this.usedParameters = usedParameters;
         return this;
-
     }
 }
 
-
 /*
-
-uri: "/shop/product"
-method: "GET",
-name: "'MyStore' Shop Price API",
-serverTime: 1265465132,
-allowedMethods: [ "GET", "PUT", "POST" ],
-usedParameters: {
-        productId: "165166-6151-6151-....",
-locale: "uk-UA"
+{
+    uri: "/shop/product",
+    method: "GET",
+    name: "'MyStore' Shop Price API",
+    serverTime: 1265465132,
+    allowedMethods: [ "GET", "PUT", "POST" ],
+    usedParameters: {
+        productId: "165166-6151-....",
+        locale: "uk-UA"
+    }
 }
  */

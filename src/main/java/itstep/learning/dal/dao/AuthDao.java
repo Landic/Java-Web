@@ -118,7 +118,7 @@ public class AuthDao {
         token.setTokenId( UUID.randomUUID() );
         token.setUserId( user.getUserId() );
         token.setIat( new Date( System.currentTimeMillis() ) );
-        token.setExp( new Date( System.currentTimeMillis() + 60000 ) );
+        token.setExp( new Date( System.currentTimeMillis() + 86400000 ) );
 
         String sql = "INSERT INTO tokens ( token_id, user_id, iat, exp ) " +
                 " VALUES ( ?, ?, ?, ? )";
@@ -142,7 +142,7 @@ public class AuthDao {
                 "`user_name`   VARCHAR(64)  NOT NULL," +
                 "`email`       VARCHAR(128) NOT NULL," +
                 "`phone`       VARCHAR(16)      NULL," +
-                "`avatar_url`  VARCHAR(16)      NULL," +
+                "`avatar_url`  VARCHAR(256)     NULL," +
                 "`birthdate`   DATETIME     NOT NULL," +
                 "`delete_dt`   DATETIME         NULL" +
                 ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci";
@@ -277,3 +277,36 @@ public class AuthDao {
         return true;
     }
 }
+/*
+DAO - Data Access Object
+набір інструментів (бізнес-логіка) для роботи з
+DTO - Data Transfer Object (Entities) - моделями
+передачі даних
+
+Задачі авторизації / автентифікації
+[users]       [users_access]     [users_roles]     [tokens]
+|user_id      |access_id         |role_id          |token_id
+|user_name    |user_id           |role_name        |user_id
+|email        |login             |can_create       |iat
+|phone        |salt              |can_read         |exp
+|avatar_url   |dk                |can_update       |
+|birthdate    |role_id           |can_delete       |
+|delete_dt    |is_active
+
+[users_details]
+|user_id
+|tg_url
+|fb_url
+|work_email
+|work_phone
+|work_address
+|home_address
+
+Д.З. Реалізувати DAO для ведення журналу доступу до сайту:
+- хто заходив
+- коли заходив
+- на яку сторінку
+Розробити структуру таблиці (таблиць), створити метод
+install() який створить таблиці у БД.
+На домашній сторінці переконатись у дієздатності методу.
+ */
