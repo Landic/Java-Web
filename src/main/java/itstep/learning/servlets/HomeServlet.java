@@ -41,8 +41,8 @@ public class HomeServlet extends HttpServlet {
             String dbMessage;
             try {
                 dbMessage =
-                        authDao.install()
-                                // && productDao.install()
+                authDao.install()
+                               && productDao.install()
                                 ? "Install OK"
                                 : "Install failed";
             }

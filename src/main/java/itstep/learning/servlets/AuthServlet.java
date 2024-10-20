@@ -1,7 +1,5 @@
 package itstep.learning.servlets;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import itstep.learning.dal.dao.AuthDao;
@@ -10,13 +8,11 @@ import itstep.learning.models.SignupFormModel;
 import itstep.learning.rest.RestMetaData;
 import itstep.learning.rest.RestResponse;
 import itstep.learning.rest.RestServlet;
-import itstep.learning.rest.RestStatus;
 import itstep.learning.services.form.FormParseService;
-import itstep.learning.services.form.FormResult;
+import itstep.learning.services.form.FormParseResult;
 import itstep.learning.services.storage.StorageService;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -142,7 +138,7 @@ public class AuthServlet extends RestServlet {
         // req.getParameter("name"); параметри запиту: URL - або form-дані
         // Але! за умови, що форма передається як x-www-form-urlencoded
         // і не працює для multipart/form-data
-        FormResult formParse = formParseService.parse(req);
+        FormParseResult formParse = formParseService.parse(req);
         SignupFormModel model = new SignupFormModel();
         String data = formParse.getFields().get("signup-name");
         if(data == null || data.isEmpty()){

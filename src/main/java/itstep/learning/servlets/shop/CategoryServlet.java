@@ -7,7 +7,7 @@ import itstep.learning.dal.dto.shop.Category;
 import itstep.learning.rest.RestMetaData;
 import itstep.learning.rest.RestResponse;
 import itstep.learning.rest.RestServlet;
-import itstep.learning.services.form.FormResult;
+import itstep.learning.services.form.FormParseResult;
 import itstep.learning.services.form.FormParseService;
 import itstep.learning.services.storage.StorageService;
 
@@ -53,7 +53,7 @@ public class CategoryServlet extends RestServlet {
 
     @Override   // CREATE - створити нову категорію товарів
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        FormResult formParseResult = formParseService.parse( req );
+        FormParseResult formParseResult = formParseService.parse( req );
         Category category = new Category();
         String data = formParseResult.getFields().get( "category-name" );
         if( data == null || data.isEmpty() ) {
