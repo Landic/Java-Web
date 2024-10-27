@@ -1,7 +1,5 @@
 package itstep.learning.models;
 
-import org.apache.commons.fileupload.FileItem;
-
 import java.util.Date;
 
 public class SignupFormModel {
@@ -11,7 +9,7 @@ public class SignupFormModel {
     private String login;
     private String password;
     private String repeat;
-    private Date birthday;
+    private Date birthdate;
     private String avatar;
 
     public String getName() {
@@ -62,12 +60,12 @@ public class SignupFormModel {
         this.repeat = repeat;
     }
 
-    public Date getBirthday() {
-        return birthday;
+    public Date getBirthdate() {
+        return birthdate;
     }
 
-    public void setBirthday(Date birthday) {
-        this.birthday = birthday;
+    public void setBirthdate(Date birthdate) {
+        this.birthdate = birthdate;
     }
 
     public String getAvatar() {
@@ -78,3 +76,8 @@ public class SignupFormModel {
         this.avatar = avatar;
     }
 }
+/*
+Д.З. Реалізувати сервіси парсингу форм (FormParseService)
+ та управління збереженням/видачею файлів (StorageService)
+у власних курсових проєктах
+ */

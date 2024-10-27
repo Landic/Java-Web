@@ -5,7 +5,6 @@ import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 import itstep.learning.dal.dao.AuthDao;
 import itstep.learning.dal.dao.shop.CartDao;
-import itstep.learning.dal.dao.shop.ProductDao;
 import itstep.learning.services.db.DbService;
 
 import javax.servlet.ServletException;
@@ -43,9 +42,9 @@ public class HomeServlet extends HttpServlet {
             try {
                 dbMessage =
                         authDao.install()
-                                && cartDao.install()
-                                ? "Install OK"
-                                : "Install failed";
+                        // && cartDao.install()
+                        ? "Install OK"
+                        : "Install failed";
             }
             catch( Exception e ) {
                 dbMessage = e.getMessage();

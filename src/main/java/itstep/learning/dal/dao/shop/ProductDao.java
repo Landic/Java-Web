@@ -3,7 +3,6 @@ package itstep.learning.dal.dao.shop;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
-import itstep.learning.dal.dto.shop.Category;
 import itstep.learning.dal.dto.shop.Product;
 import itstep.learning.services.db.DbService;
 
@@ -175,7 +174,7 @@ public class ProductDao {
                 "category_delete_dt   DATE                NULL," +
                 "category_slug        VARCHAR(128)        NULL," +
                 "UNIQUE(category_slug)" +
-                ") ";
+            ") ";
 
         try( Statement stmt = dbService.getConnection().createStatement() ) {
             stmt.executeUpdate( sql ) ;

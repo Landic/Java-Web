@@ -6,25 +6,30 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 @Singleton
-public class MdSHashService implements HashService {
+public class Md5HashService implements HashService {
 
     @Override
-    public String hash(String string) {
-        try{
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            md.update(string.getBytes());
+    public String hash( String string ) {
+        try {
+            MessageDigest md = MessageDigest.getInstance( "MD5" );
+            md.update( string.getBytes() );
             byte[] digest = md.digest();
             StringBuilder sb = new StringBuilder();
-            for (byte b : digest) {
-                sb.append(Integer.toString(
+            for( byte b : digest ) {
+                sb.append(
+                        Integer.toString(
                                 b + 0x100, 16
                         ).substring(1)
                 );
             }
             return sb.toString();
-        } catch (NoSuchAlgorithmException e) {
-            System.err.println(e.getMessage());
+        }
+        catch( NoSuchAlgorithmException ex ) {
+            System.err.println( ex.getMessage() );
             return null;
         }
     }
 }
+/*
+
+ */

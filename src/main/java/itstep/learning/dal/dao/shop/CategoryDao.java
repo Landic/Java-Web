@@ -45,7 +45,7 @@ public class CategoryDao {
         }
         category.setId( UUID.randomUUID() );
         String sql = "INSERT INTO categories " +
-                "(category_id,category_name,category_description,category_img_url,category_delete_dt )" +
+            "(category_id,category_name,category_description,category_img_url,category_delete_dt )" +
                 " VALUES (?, ?, ?, ?, ?)";
         try( PreparedStatement prep = dbService.getConnection().prepareStatement(sql) ) {
             prep.setString( 1, category.getId().toString() );

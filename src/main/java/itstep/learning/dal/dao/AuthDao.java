@@ -57,7 +57,7 @@ public class AuthDao {
         user.setUserName( model.getName() );
         user.setEmail( model.getEmail() );
         user.setPhone( model.getPhone() );
-        user.setBirthdate( model.getBirthday() );
+        user.setBirthdate( model.getBirthdate() );
         user.setAvatarUrl( model.getAvatar() );
         String sql = "INSERT INTO `users` " +
                 "(`user_id`, `user_name`, `email`, `phone`, `avatar_url`, `birthdate`) " +

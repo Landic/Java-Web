@@ -1,9 +1,9 @@
 package itstep.learning.servlets;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import itstep.learning.services.kdf.KdfService;
 
-import javax.inject.Singleton;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -20,13 +20,10 @@ public class WebXmlServlet extends HttpServlet {
     }
 
     @Override
-    protected  void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
-    {
-        req.setAttribute("hash", kdfService.hashCode());
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setAttribute( "hash", kdfService.hashCode() );
 
-        req.setAttribute("body", "web_xml.jsp"); // ViewData["body"] = "home.jsp   "
-
-        // ~ return View();
-        req.getRequestDispatcher("WEB-INF/views/_layout.jsp").forward(req, resp);
+        req.setAttribute( "body", "web_xml.jsp" );
+        req.getRequestDispatcher( "WEB-INF/views/_layout.jsp" ).forward(req, resp);
     }
 }
